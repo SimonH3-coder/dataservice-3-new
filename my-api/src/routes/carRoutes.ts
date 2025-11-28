@@ -1,10 +1,12 @@
 import { Router } from "express";
-import { createRecord, getRecord, getRecords } from "../controllers/carController.js";
+import { createRecord, getRecord, getRecords, updateRecord } from "../controllers/carController.js";
 
 const router = Router();
+
+// Subroutes til /api/cars
 router.get("/", getRecords);
 router.get("/:id", getRecord);
 router.post("/", createRecord);
-routes.put("/:id", updateRoute);
+router.put("/:id", updateRecord);
 
 export const carRoutes = router;

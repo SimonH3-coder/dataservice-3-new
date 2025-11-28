@@ -1,6 +1,13 @@
 import { Request, Response } from "express";
 import { prisma } from "../prisma.js";
 
+/**
+ * Method Get Records
+ * @param req
+ * @param res
+ * @returns Array
+ */
+
 export const getRecords = async (req: Request, res: Response) => {
   try {
     const data = await prisma.car.findMany();
@@ -10,6 +17,13 @@ export const getRecords = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to fetch cars" });
   }
 };
+
+/**
+ * Method Get Record
+ * @param req
+ * @param res
+ * @returns Object
+ */
 
 export const getRecord = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
@@ -34,6 +48,12 @@ export const getRecord = async (req: Request, res: Response) => {
   }
 };
 
+/** * Method Create Record
+ * @param req
+ * @param res
+ * @returns Object
+ */
+
 export const createRecord = async (req: Request, res: Response) => {
   const { category, brand, model, year, price, fuelType } = req.body;
 
@@ -57,6 +77,12 @@ export const createRecord = async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Somthing went wrong" });
   }
 };
+
+/** Method Update Record
+ * @param req
+ * @param res
+ * @returns Object
+ */
 
 export const updateRecord = async (req: Request, res: Response) => {
   const id = Number(req.params.id); //sikrer at id er et tal
