@@ -10,11 +10,12 @@ import { prisma } from "../prisma.js";
 
 export const getRecords = async (req: Request, res: Response) => {
   try {
-    const data = await prisma.car.findMany();
+    const data = await prisma.brand.findMany();
+
     return res.status(200).json(data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Failed to fetch cars" });
+    res.status(500).json({ error: "Failed to fetch brands" });
   }
 };
 
@@ -33,16 +34,12 @@ export const getRecord = async (req: Request, res: Response) => {
   }
 
   try {
-    const data = await prisma.car.findUnique({
+    const data = await prisma.brand.findUnique({
       where: { id },
       select: {
         id: true,
-        model: true,
-        brand: true,
-        category: true,
-        year: true,
-        price: true,
-        fuelType: true,
+        name: true,
+        logoUrl: true,
       },
     });
     return res.status(200).json(data);
@@ -52,71 +49,63 @@ export const getRecord = async (req: Request, res: Response) => {
   }
 };
 
-/** * Method Create Record
+/**
+ * Method Get Record
  * @param req
  * @param res
  * @returns Object
  */
 
 export const createRecord = async (req: Request, res: Response) => {
-  const { category, brand, model, year, price, fuelType } = req.body;
+  const { name, logoUrl } = req.body;
 
-  if (!category || !brand || !model || !year || !price || !fuelType) {
-    return res.status(400).json({ error: "All data is required" });
+  if (!name || !logoUrl) {
+    return res.status(400).json({ error: "Missing required fields" });
   }
   try {
-    const data = await prisma.car.create({
+    const data = await prisma.brand.create({
       data: {
-        category,
-        brand,
-        model,
-        year: Number(year),
-        price,
-        fuelType,
+        name,
+        logoUrl,
       },
     });
     return res.status(201).json(data);
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Somthing went wrong" });
+    res.status(500).json({ error: "Something went wrong" });
   }
 };
 
-/** Method Update Record
+/** * Method Create Record
  * @param req
  * @param res
  * @returns Object
  */
 
 export const updateRecord = async (req: Request, res: Response) => {
-  const id = Number(req.params.id); //sikrer at id er et tal
-  const { category, brand, model, year, price, fuelType } = req.body;
+  const id = Number(req.params.id); //Sikker at id er et tal
+  const { name, logoUrl } = req.body;
 
   if (!id) {
-    return res.status(400).json({ error: "Id skal have en gyldig værid" });
+    return res.status(400).json({ error: "Id skal have en gyldig værdi" });
   }
 
-  if (!category || !brand || !model || !year || !price || !fuelType) {
+  if (!name || !logoUrl) {
     return res.status(400).json({ error: "Alle felter skal udfyldes" });
   }
 
   try {
-    const data = await prisma.car.update({
+    const data = await prisma.brand.update({
       where: { id },
       data: {
-        category,
-        brand,
-        model,
-        year: Number(year),
-        price,
-        fuelType,
+        name,
+        logoUrl,
       },
     });
-
     return res.status(201).json(data);
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({ error: "Noget gik galt i serveren" });
+    console.error(error);
+    return res.status(500).json({ error: "Noget gik galt med serveren" });
   }
 };
 
@@ -124,17 +113,14 @@ export const deleteRecord = async (req: Request, res: Response) => {
   const id = Number(req.params.id);
 
   if (!id) {
-    return res.status(400).json({ error: "Id is missing " });
+    return res.status(400).json({ error: "Id is missing" });
   }
 
   try {
-    const data = await prisma.car.delete({
+    const data = await prisma.brand.delete({
       where: { id },
     });
-    res.status(200).json({
-      message: "Record deleted",
-      deleteId: id,
-    });
+    return res.status(200).json(data);
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: "Failed to delete record" });
