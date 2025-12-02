@@ -3,6 +3,7 @@ import express from "express";
 import dotenv from "dotenv";
 import { userRoutes } from "./routes/userRoutes.js";
 import { carRoutes } from "./routes/carRoutes.js";
+import { loginRoutes } from "./routes/loginRoutes.js";
 
 // Indlæs miljøvariabler fra .env (uden at vise logs)
 dotenv.config({ quiet: true });
@@ -21,9 +22,9 @@ app.use(express.urlencoded({ extended: true }));
 
 // Anvend routes
 app.use("/api/cars", carRoutes);
-// app.use("/api/orgs", orgRoutes);
+
 app.use("/api/users", userRoutes);
-// app.use("/api/auth", authRoutes);
+app.use("/api/login", loginRoutes);
 
 // Brug vores user-routes under /api/users
 app.use("/api/users", userRoutes);
