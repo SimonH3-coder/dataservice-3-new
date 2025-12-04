@@ -33,12 +33,15 @@ model User {
 // car model
 model Car {
   id       Int     @id @default(autoincrement())
-  category String
-  brand    String
+  categoryId Int
+  brandId Int
   model    String
   year     Int
+  created  DateTime @default(now()) @map("date_of_manufacture")
   price    Decimal @db.Decimal(10, 2)
-  fuelType String
+  fueltypeId Int
+
+  
 
   // brand Brand @relation(fields: [brand], refernece: [id])
 
@@ -49,7 +52,24 @@ model Car {
 model Brand {
   id      Int    @id @default(autoincrement())
   name    String
-  logoUrl String
+  logoUrl String?
 
   @@map("brands")
 }
+
+// catogory model
+model Category {
+  id   Int    @id @default(autoincrement())
+  name String
+  @@map("categories")
+}
+
+//fueltype model
+model Fueltype {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  @@map("fueltypes")
+}
+
+
